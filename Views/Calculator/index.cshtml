@@ -1,9 +1,5 @@
 @model Calculation
 @using System.Collections
-@using X.PagedList
-@using X.PagedList.Mvc.Common
-@using X.PagedList.Mvc.Core
-@using X.PagedList.Mvc.Core.Common
 @{
     ViewData["Title"] = "Calculator";
 }
@@ -15,39 +11,54 @@
             clearAll();
             function updateCalculatorScreen() {
                 console.log($('#Number1').val());
-                // $('#Number1').val( parseFloat($('#Number1').val()) );
-                // $('#Number2').val( parseFloat($('#Number2').val()) );
-                $('#calculator-screen').val($('#Number1').val()+" "+$('#Operator').val()+" "+$('#Number2').val());
+                $('#Number1').val( $('#Number1').val().replace(".", ",") );
+                $('#Number2').val( $('#Number2').val().replace(".", ",") );
+                $('#calculator-screen').html($('#Number1').val()+" "+$('#Operator').val()+" "+$('#Number2').val());
             }
             function clearAll() {
                $('#Number1').val('');
                $('#Number2').val('');
                $('#Operator').val('');
-               $('#calculator-screen').val('');
+               updateCalculatorScreen();
             }
             var result = @ViewData["result"];
             if (result !== "null") {
-                 $('#calculator-screen').val(result);
+                if (result.length <= 9) {
+                    $('#Number1').val(result);
+                    updateCalculatorScreen();
+                } else {
+                    $('#calculator-screen').html(result);
+                }
             }
 
             $('.number-btn').click(function() {
                 if ($('#Operator').val() === '') {
-                    $('#Number1').val($('#Number1').val()+$(this).val());
+                    if ($('#Number1').val().length <= 9) {
+                        $('#Number1').val($('#Number1').val()+$(this).val());
+                    }
                 } else {
-                    $('#Number2').val($('#Number2').val()+$(this).val());
+                    if ($('#Number2').val().length <= 9) {
+                        $('#Number2').val($('#Number2').val()+$(this).val());
+                    }
                 }
                 updateCalculatorScreen();
             });
             $('#dot-btn').click(function() {
                 if ($('#Operator').val() === '') {
-                    $('#Number1').val($('#Number1').val()+$(this).val());
+                    if ($('#Number1').val().length <= 8 && $('#Number1').val().length > 0 ) {
+                        $('#Number1').val($('#Number1').val()+$(this).val());
+                    }
                 } else {
-                    $('#Number2').val($('#Number2').val()+$(this).val());
+                    if ($('#Number2').val().length <= 8 && $('#Number2').val().length > 0) {
+                        $('#Number2').val($('#Number2').val()+$(this).val());
+                    }
                 }
                updateCalculatorScreen();
             });
             $('.operator-btn').click(function() {
-                $('#Operator').val($(this).val());
+                if ($('#Number1').val().length > 0) {
+                    $('#Operator').val($(this).val());
+                }
                 updateCalculatorScreen();
             });
             
@@ -64,11 +75,34 @@
                }
                 updateCalculatorScreen();
             });
+            $('form').on('submit', function(e) {
+                let error = null;
+                if ($('#Operator').val() === '/' && $('#Number2').val() === '0') {
+                    error = "Nie można dzielić przez 0";
+                    e.preventDefault();
+                    $('#calculator-screen-error').css('display', 'flex').html(error).fadeIn();
+                    setTimeout(function() {
+                        $('#calculator-screen-error').fadeOut();
+                    }, 1500);
+                }
+            });
+            let last_calculations_div_collapsed = true;
+            $('#last-calculations-btn').click(function() {
+                if (last_calculations_div_collapsed) {
+                    last_calculations_div_collapsed = false;
+                    $('#last-calculations-div').slideDown(); 
+                    $('.fa-sort-up').removeClass('fa-sort-up').addClass('fa-sort-down').css('margin-top', '-10px');
+                } else {
+                    last_calculations_div_collapsed = true;
+                    $('#last-calculations-div').slideUp(); 
+                    $('.fa-sort-down').removeClass('fa-sort-down').addClass('fa-sort-up').css('margin-top', '10px');
+                }
+            });
         });
     </script>
 }
 
-<div class="container" id="calculator-index-wrapper">
+<div id="calculator-index-wrapper" class="container mt-5 pt-5">
     <div class="card mx-auto">
         <form asp-controller="Calculator" asp-action="Calculate" method="post">
             <input type="hidden" asp-for="Number1" />
@@ -77,7 +111,30 @@
             <span asp-validation-for="Number2" class="text-danger"></span>
             <input type="hidden" asp-for="Operator" />
             <input type="hidden" asp-for="UserId" value='@ViewData["userID"]' />
-            <input type="text" id="calculator-screen" disabled/>
+            
+            <div id="last-calculations-btn">
+                <div class="row mx-0">
+                    <div class="col-12 px-0">
+                        <i class="fas fa-sort-up"></i>
+                    </div>
+                    <div id="last-calculations-div">
+                        @foreach (var calculation in (IEnumerable<Calculation>) ViewData["Calculations"])
+                        {
+                            <div class="col-12 border-bottom py-2">
+                                @calculation.Number1.ToString().Replace(",", ".")
+                                @calculation.Operator
+                                @calculation.Number2.ToString().Replace(",", ".")
+                                =
+                                @calculation.Result.ToString().Replace(",", ".")
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="position-relative">
+                <div id="calculator-screen"></div>
+                <div id="calculator-screen-error"></div>
+            </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-3"><button type="button" value="+" class="operator-btn d-block btn btn-primary">+</button></div>
@@ -113,30 +170,5 @@
                 </div>
             </div>
         </form>
-    </div>
-</div>
-
-
-
-<div class="container">
-    <ul>
-        @foreach (var calculation in (IPagedList<Calculation>) ViewData["Calculations"])
-        {
-            <li>
-                @calculation.Number1
-                @calculation.Operator
-                @calculation.Number2
-                =
-                @calculation.Result.ToString().Replace(",", ".");
-            </li>
-        }
-    </ul>
-    <div class="text-center">
-        @Html.PagedListPager((IPagedList<Calculation>) ViewData["Calculations"], page => Url.Action("Index", 
-                new { page, result = ViewData["result"] }),
-                new PagedListRenderOptions {
-                    LiElementClasses = new string[] { "page-item" },
-                    PageClasses = new string[] { "page-link" }
-                })
     </div>
 </div>

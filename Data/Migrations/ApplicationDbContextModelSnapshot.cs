@@ -218,11 +218,11 @@ namespace MvcCalculator.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<float>("Number1")
-                        .HasColumnType("REAL");
+                    b.Property<decimal>("Number1")
+                        .HasColumnType("TEXT");
 
-                    b.Property<float>("Number2")
-                        .HasColumnType("REAL");
+                    b.Property<decimal>("Number2")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Operator")
                         .IsRequired()

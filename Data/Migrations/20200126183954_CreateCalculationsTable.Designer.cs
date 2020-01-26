@@ -9,7 +9,7 @@ using MvcCalculator.Data;
 namespace MvcCalculator.Data.Migrations
 {
     [DbContext(typeof(MvcCalculatorContext))]
-    [Migration("20200126163908_CreateCalculationsTable")]
+    [Migration("20200126183954_CreateCalculationsTable")]
     partial class CreateCalculationsTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -220,11 +220,11 @@ namespace MvcCalculator.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<float>("Number1")
-                        .HasColumnType("REAL");
+                    b.Property<decimal>("Number1")
+                        .HasColumnType("TEXT");
 
-                    b.Property<float>("Number2")
-                        .HasColumnType("REAL");
+                    b.Property<decimal>("Number2")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Operator")
                         .IsRequired()

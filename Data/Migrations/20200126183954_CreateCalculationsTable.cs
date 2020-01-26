@@ -13,8 +13,8 @@ namespace MvcCalculator.Data.Migrations
                     Id = table.Column<uint>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     UserId = table.Column<string>(nullable: false),
-                    Number1 = table.Column<float>(nullable: false),
-                    Number2 = table.Column<float>(nullable: false),
+                    Number1 = table.Column<decimal>(nullable: false),
+                    Number2 = table.Column<decimal>(nullable: false),
                     Operator = table.Column<string>(nullable: false)
                 },
                 constraints: table =>

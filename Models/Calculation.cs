@@ -13,13 +13,15 @@ namespace MvcCalculator.Models
         [Required]
         public string UserId { get; set; }
         [Required]
-        public float Number1 { get; set; }
+        [Range(Double.MinValue, Double.MaxValue)]
+        public decimal Number1 { get; set; }
         [Required]
-        public float Number2 { get; set; }
+        [Range(Double.MinValue, Double.MaxValue)]
+        public decimal Number2 { get; set; }
         [Required]
         public string Operator { get; set; }
 
-        public float Result
+        public decimal Result
         {
             get
             {
