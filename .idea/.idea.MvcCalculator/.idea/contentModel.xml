@@ -39,7 +39,7 @@
       <e p="Startup.cs" t="Include" />
       <e p="Views" t="Include">
         <e p="Calculator" t="Include">
-          <e p="index.cshtml" t="Include" />
+          <e p="Index.cshtml" t="Include" />
         </e>
         <e p="Home" t="Include">
           <e p="Index.cshtml" t="Include" />

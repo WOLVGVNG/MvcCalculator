@@ -78,7 +78,7 @@
             $('form').on('submit', function(e) {
                 let error = null;
                 if ($('#Operator').val() === '/' && $('#Number2').val() === '0') {
-                    error = "Nie można dzielić przez 0";
+                    error = "You cannot divide by 0";
                     e.preventDefault();
                     $('#calculator-screen-error').css('display', 'flex').html(error).fadeIn();
                     setTimeout(function() {
