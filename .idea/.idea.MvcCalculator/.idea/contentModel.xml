@@ -18,13 +18,11 @@
       </e>
       <e p="Data" t="Include">
         <e p="ApplicationDbContext.cs" t="Include" />
-        <e p="Migrations" t="Include">
-          <e p="00000000000000_CreateIdentitySchema.Designer.cs" t="Include" />
-          <e p="00000000000000_CreateIdentitySchema.cs" t="Include" />
-          <e p="20200126183954_CreateCalculationsTable.Designer.cs" t="Include" />
-          <e p="20200126183954_CreateCalculationsTable.cs" t="Include" />
-          <e p="ApplicationDbContextModelSnapshot.cs" t="Include" />
-        </e>
+      </e>
+      <e p="Migrations" t="Include">
+        <e p="20200127193424_InitialCreate.Designer.cs" t="Include" />
+        <e p="20200127193424_InitialCreate.cs" t="Include" />
+        <e p="MvcCalculatorContextModelSnapshot.cs" t="Include" />
       </e>
       <e p="Models" t="Include">
         <e p="Calculation.cs" t="Include" />

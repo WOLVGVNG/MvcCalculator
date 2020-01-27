@@ -9,7 +9,7 @@ namespace MvcCalculator.Models
 
     public class Calculation
     {
-        public uint Id { get; set; }
+        public int Id { get; set; }
         [Required]
         public string UserId { get; set; }
         [Required]

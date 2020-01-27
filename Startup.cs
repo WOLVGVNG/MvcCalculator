@@ -31,8 +31,8 @@ namespace MvcCalculator
         {
             services.AddHttpContextAccessor();
             services.AddDbContext<MvcCalculatorContext>(options =>
-                options.UseSqlite(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("mssql")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<MvcCalculatorContext>();
             services.AddControllersWithViews();
