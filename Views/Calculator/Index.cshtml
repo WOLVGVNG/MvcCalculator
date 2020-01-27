@@ -10,7 +10,6 @@
         $(function() {
             clearAll();
             function updateCalculatorScreen() {
-                console.log($('#Number1').val());
                 $('#Number1').val( $('#Number1').val().replace(".", ",") );
                 $('#Number2').val( $('#Number2').val().replace(".", ",") );
                 $('#calculator-screen').html($('#Number1').val()+" "+$('#Operator').val()+" "+$('#Number2').val());
@@ -22,7 +21,8 @@
                updateCalculatorScreen();
             }
             var result = @ViewData["result"];
-            if (result !== "null") {
+            if (result !== null) {
+                console.log(result);
                 if (result.length <= 9) {
                     $('#Number1').val(result);
                     updateCalculatorScreen();
