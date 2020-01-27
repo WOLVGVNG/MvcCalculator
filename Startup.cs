@@ -33,7 +33,7 @@ namespace MvcCalculator
             services.AddDbContext<MvcCalculatorContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("mssql")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<MvcCalculatorContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
