@@ -22,8 +22,7 @@
             }
             var result = @ViewData["result"];
             if (result !== null) {
-                console.log(result);
-                if (result.length <= 9) {
+                if (String(result).length <= 9) {
                     $('#Number1').val(result);
                     updateCalculatorScreen();
                 } else {
